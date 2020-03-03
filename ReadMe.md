@@ -45,6 +45,6 @@ for example - if your BASE_DOMAIN is dev.io
 Goto:
 ----
 
-http://localhost:8080  ->  traefik - Reverse Proxy or Edge Router Dashboard
-https://jaeger.dev.io  ->  jaeger - Distributed Tracing 
-https://whoami.dev.io  ->  Sample App
+* http://localhost:8080  ->  traefik - Reverse Proxy or Edge Router Dashboard
+* https://jaeger.dev.io  ->  jaeger - Distributed Tracing 
+* https://whoami.dev.io  ->  Sample App

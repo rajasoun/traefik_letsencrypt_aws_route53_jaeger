@@ -42,4 +42,9 @@ for example - if your BASE_DOMAIN is dev.io
 127.0.0.1               whoami.dev.io  jaeger.dev.io
 ```
 
+Goto:
+----
 
+http://localhost:8080  ->  traefik - Reverse Proxy or Edge Router Dashboard
+https://jaeger.dev.io  ->  jaeger - Distributed Tracing 
+https://whoami.dev.io  ->  Sample App

@@ -57,7 +57,7 @@ services:
       - "5778:5778"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jaeger.rule=Host(`jaeger.htddev.org`)"
+      - "traefik.http.routers.jaeger.rule=Host(`jaeger.${BASE_DOMAIN}`)"
       - "traefik.http.routers.jaeger.entrypoints=websecure"
       - "traefik.http.routers.jaeger.tls.certresolver=bizapps"
       - "traefik.http.services.jaeger.loadbalancer.server.port=16686"
@@ -68,7 +68,7 @@ services:
     container_name: "whoami"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.htddev.org`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${BASE_DOMAIN}`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=bizapps"
     environment:

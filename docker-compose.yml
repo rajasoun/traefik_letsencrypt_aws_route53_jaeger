@@ -1,0 +1,76 @@
+version: "3.7"
+
+services:
+
+  reverse-proxy:
+    image: "traefik:v2.1"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--log.filePath=/logs/traefik.log"
+      - "--accesslog=true"
+      - "--accesslog.filepath=/logs/access.log"
+      - "--accesslog.bufferingsize=100"
+      # - "--metrics=true"
+      - "--tracing=true"
+      - "--tracing.jaeger=true"
+      - "--tracing.jaeger.samplingServerURL=http://jaeger:5778/sampling"
+      - "--tracing.jaeger.localAgentHostPort=jaeger:6831"
+      - "--tracing.jaeger.samplingParam=1.0"
+      - "--tracing.jaeger.samplingType=const"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.bizapps.acme.dnschallenge=true"
+      - "--certificatesresolvers.bizapps.acme.dnschallenge.provider=route53"
+      # - "--certificatesresolvers.bizapps.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.bizapps.acme.email=${EMAIL}"
+      - "--certificatesresolvers.bizapps.acme.storage=/letsencrypt/acme.json"
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    env_file:
+      - .env
+
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "./logs:/logs"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  jaeger:
+    container_name: "jaeger"
+    image: jaegertracing/all-in-one:1.17
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+      - "5778:5778"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jaeger.rule=Host(`jaeger.htddev.org`)"
+      - "traefik.http.routers.jaeger.entrypoints=websecure"
+      - "traefik.http.routers.jaeger.tls.certresolver=bizapps"
+      - "traefik.http.services.jaeger.loadbalancer.server.port=16686"
+      - "traefik.http.services.jaeger.loadbalancer.passhostheader=true"
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.htddev.org`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=bizapps"
+    environment:
+      JAEGER_AGENT_HOST: "jaeger"
+      JAEGER_AGENT_PORT: "6831"

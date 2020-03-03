@@ -20,10 +20,10 @@ cp .env_template .env
 
 Populate the value in .env 
 
-EMAIL                   -> Valid Email ID
-BASE_DOMAIN             -> Base Domain that you have the ownership in AWS 
-AWS_ACCESS_KEY_ID       -> AWS Access Key
-AWS_SECRET_ACCESS_KEY   -> AWS Secret Key
+* EMAIL                   -> Valid Email ID
+* BASE_DOMAIN             -> Base Domain that you have the ownership in AWS 
+* AWS_ACCESS_KEY_ID       -> AWS Access Key
+* AWS_SECRET_ACCESS_KEY   -> AWS Secret Key
 
 ```
 docker-compose up -d 

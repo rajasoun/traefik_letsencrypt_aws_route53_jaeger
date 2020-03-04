@@ -26,13 +26,15 @@ Populate the value in .env
 * AWS_SECRET_ACCESS_KEY   -> AWS Secret Key
 
 ```
-docker-compose up -d 
-tail -f tail -f logs/traefik.log
+./sandbox.bash 
+
+./sandbox.bash up
 ```
 
 Pls wait around a minute for the certificate generation from letsencrypt for the subdomains.
 
-Add following enteries to your /etc/hosts in macOS
+Add following enteries to your /etc/hosts in macOS or
+C:\Windows\System32\drivers\etc\hosts on Windows.
 
 127.0.0.1               whoami.<base_domain>  jaeger.<base_domain>
 

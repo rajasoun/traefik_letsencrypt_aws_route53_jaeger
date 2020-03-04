@@ -28,6 +28,16 @@ Populate the value in .env
 ```
 ./sandbox.bash 
 
+Usage: ./sandbox.bash  {up|down|status|logs|ssl}
+
+   up               Provision, Configure, Validate Application Stack
+   down             Destroy Application Stack
+   status           Displays Status of Application Stack
+   logs             Application Stack Logs
+   ssl              Generate SSL Certs (Experimental)
+```
+
+```
 ./sandbox.bash up
 ```
 

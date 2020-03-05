@@ -21,6 +21,10 @@ case $choice in
     up)
       echo "Bring Up Application Stack"
       docker-compose ${SERVICES} up -d 
+      echo "Goto following Links  "
+      echo "http://localhost:8080          ->  Traefic Dashboard"
+      echo "https://jaeger.dev.io          ->  (jaeger) Distributed Tracing "
+      echo "https://whoami.dev.io          ->  Sample App"      
       ;;
     down)
       echo "Destroy Application Stack & Services"

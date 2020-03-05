@@ -34,7 +34,6 @@ Usage: ./sandbox.bash  {up|down|status|logs|ssl}
    down             Destroy Application Stack
    status           Displays Status of Application Stack
    logs             Application Stack Logs
-   ssl              Generate SSL Certs (Experimental)
 ```
 
 ```

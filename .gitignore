@@ -1,4 +1,3 @@
-logs
-letsencrypt
+# logs
+# letsencrypt
 .env
-certs

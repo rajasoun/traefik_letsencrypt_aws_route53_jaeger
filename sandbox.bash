@@ -30,6 +30,7 @@ case $choice in
     down)
       echo "Destroy Application Stack & Services"
       docker-compose ${SERVICES} down
+      rm -fr logs/*.log
       ;;
     status)
       echo "Containers Status..."

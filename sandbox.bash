@@ -20,12 +20,12 @@ choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
 case $choice in
     up)
       echo "Bring Up Application Stack"
-      docker-compose ${SERVICES} up -d 
+      docker-compose ${SERVICES} up -d
       export $(cat .env)
       echo "Goto following Links  "
-      echo "http://localhost:8080/                    ->  Traefic Dashboard"
-      echo "https://jaeger.${BASE_DOMAIN}                 ->  (jaeger) Distributed Tracing "
-      echo "https://whoami.${BASE_DOMAIN}                 ->  Sample App"      
+      echo "http://localhost:8080/                   ->  Traefic Dashboard"
+      echo "https://jaeger.${DOMAIN}                 ->  (jaeger) Distributed Tracing "
+      echo "https://whoami.${DOMAIN}                 ->  Sample App"      
       ;;
     down)
       echo "Destroy Application Stack & Services"

@@ -23,9 +23,9 @@ case $choice in
       docker-compose ${SERVICES} up -d
       export $(cat .env)
       echo "Goto following Links  "
-      echo "http://localhost:8080/                   ->  Traefic Dashboard"
-      echo "https://jaeger.${DOMAIN}                 ->  (jaeger) Distributed Tracing "
-      echo "https://whoami.${DOMAIN}                 ->  Sample App"      
+      echo "https://traefik.${BASE_DOMAIN}/dashboard/#    ->  Traefic Dashboard"
+      echo "https://jaeger.${BASE_DOMAIN}                 ->  (jaeger) Distributed Tracing "
+      echo "https://whoami.${BASE_DOMAIN}                 ->  Sample App"      
       ;;
     down)
       echo "Destroy Application Stack & Services"

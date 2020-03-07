@@ -23,7 +23,7 @@ case $choice in
       docker-compose ${SERVICES} up -d
       export $(cat .env)
       echo "Goto following Links  "
-      echo "https://traefik.${BASE_DOMAIN}/dashboard/#    ->  Traefic Dashboard"
+      echo "https://traefik.${BASE_DOMAIN}/dashboard/#/    ->  Traefic Dashboard"
       echo "https://jaeger.${BASE_DOMAIN}                 ->  (jaeger) Distributed Tracing "
       echo "https://whoami.${BASE_DOMAIN}                 ->  Sample App"      
       ;;

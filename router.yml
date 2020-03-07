@@ -40,6 +40,12 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
     labels:
+      ### - HTTP -> HTTPS upgrade 
+      - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
+      - traefik.http.routers.http-catchall.entrypoints=web
+      - traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      ####
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.${BASE_DOMAIN}`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"

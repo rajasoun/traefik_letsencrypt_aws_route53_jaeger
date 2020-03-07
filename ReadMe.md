@@ -28,7 +28,7 @@ Populate the value in .env
 ```
 ./sandbox.bash 
 
-Usage: ./sandbox.bash  {up|down|status|logs|ssl}
+Usage: ./sandbox.bash  {up|down|status|logs}
 
    up               Provision, Configure, Validate Application Stack
    down             Destroy Application Stack
@@ -39,6 +39,8 @@ Usage: ./sandbox.bash  {up|down|status|logs|ssl}
 ```
 ./sandbox.bash up
 ```
+
+> For macOS & Linux - Host enteries are added automatically. For windows, it needs to be added automatically
 
 Pls wait around a minute for the certificate generation from letsencrypt for the subdomains.
 
@@ -52,10 +54,3 @@ for example - if your BASE_DOMAIN is dev.io
 ```
 127.0.0.1               whoami.dev.io  jaeger.dev.io
 ```
-
-Goto:
-----
-
-* http://localhost:8080  ->  traefik - Reverse Proxy or Edge Router Dashboard
-* https://jaeger.dev.io  ->  jaeger - Distributed Tracing 
-* https://whoami.dev.io  ->  Sample App

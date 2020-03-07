@@ -3,9 +3,9 @@
 function display_url_status(){
     HOST=$1
     if [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' ${HOST})" != "200" ]] ; then 
-        echo "$HOST  -> Down"
+        echo "https://$HOST  -> Down"
     else
-        echo "$HOST  -> Up"
+        echo "https://$HOST  -> Up"
     fi
 }
 

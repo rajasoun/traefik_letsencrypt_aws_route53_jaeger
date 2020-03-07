@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  
+  hotrod:
+    image: "jaegertracing/example-hotrod:latest"
+    container_name: "hotrod"
+    command: all
+    ports:
+      - "8080"
+      
+    environment:
+      JAEGER_AGENT_HOST: "jaeger"
+      JAEGER_AGENT_PORT: "6831"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hotrod.rule=Host(`hotrod.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.hotrod.entrypoints=websecure"
+      - "traefik.http.routers.hotrod.tls.certresolver=bizapps"
+      - "traefik.http.services.hotrod.loadbalancer.server.port=8080"
+      - "traefik.http.services.hotrod.loadbalancer.passhostheader=true"   
+    env_file:
+      - .env
+
+      

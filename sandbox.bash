@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
+
+source "scripts/actions.bash"
 source "scripts/os.bash"
 source "scripts/web.bash"
-
-SERVICES=" -f router.yml -f tracer.yml -f whoami.yml"
 
 function help(){
     echo "Usage: $0  {up|down|status|logs}" >&2
@@ -17,39 +17,17 @@ function help(){
     return 1
 }
 
-function add_host_entries(){
-  add "router.${BASE_DOMAIN}"
-  add "tracer.${BASE_DOMAIN}"
-  add "whoami1.${BASE_DOMAIN}"
-}
-
-function remove_host_entries(){
-  backup
-  remove "router.${BASE_DOMAIN}"
-  remove "tracer.${BASE_DOMAIN}"
-  remove "whoami1.${BASE_DOMAIN}"
-}
-
-function verify_certificates(){
-  wait_for_url "http://router.${BASE_DOMAIN}"
-  wait_for_url "http://tracer.${BASE_DOMAIN}"
-  wait_for_url "http://whoami1.${BASE_DOMAIN}"
-}
-
-function display_app_status(){
-    echo "Apps Status"
-    display_url_status "https://router.${BASE_DOMAIN}/dashboard/#/"
-    display_url_status "https://tracer.${BASE_DOMAIN}"
-    display_url_status "https://whoami1.${BASE_DOMAIN}"
-}
+COMPOSE_FILES=" -f router.yml -f tracer.yml -f whoami.yml -f hotrod.yml"
+services=(router tracer whoami1 hotrod)
+export services
+export $(cat .env)
 
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
-export $(cat .env)
 case $choice in
     up)
       echo "Bring Up Application Stack"
-      docker-compose ${SERVICES} up -d
+      docker-compose ${COMPOSE_FILES} up -d
       echo "Adding Host Enteries...  "
       add_host_entries
       verify_certificates
@@ -57,7 +35,7 @@ case $choice in
       ;;
     down)
       echo "Destroy Application Stack & Services"
-      docker-compose ${SERVICES} down
+      docker-compose ${COMPOSE_FILES} down
       echo "Removing Host Enteries & Log files...  "
       remove_host_entries
       rm -fr logs/*.log
@@ -65,11 +43,11 @@ case $choice in
     status)
       display_app_status
       echo -e "\nContainers Status..."
-      docker-compose ${SERVICES} ps
+      docker-compose ${COMPOSE_FILES} ps
       ;;
     logs)
       echo "Containers Log..."
-      tail -f logs/traefik.log
+      tail -f logs/traefik.log | grep "$2"
       ;;
     *)  help ;;
 esac

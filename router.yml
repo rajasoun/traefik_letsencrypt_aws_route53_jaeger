@@ -32,7 +32,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      - "8080"
 
     volumes:
       - "./letsencrypt:/letsencrypt"
@@ -41,10 +41,11 @@ services:
 
     labels:
       ### - HTTP -> HTTPS upgrade 
-      - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
-      - traefik.http.routers.http-catchall.entrypoints=web
-      - traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker
-      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.http_catchall.rule=HostRegexp(`{any:.+}`)
+      - traefik.http.routers.http_catchall.entrypoints=web
+      - traefik.http.routers.http_catchall.middlewares=https_redirect
+      - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https_redirect.redirectscheme.permanent=true
       ####
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`router.${BASE_DOMAIN}`)"
@@ -54,4 +55,3 @@ services:
       - "traefik.http.services.dashboard.loadbalancer.passhostheader=true"
     env_file:
       - .env
-

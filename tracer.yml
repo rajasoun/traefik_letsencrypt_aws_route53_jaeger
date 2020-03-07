@@ -17,10 +17,10 @@ services:
       - "5778:5778"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jaeger.rule=Host(`jaeger.${BASE_DOMAIN}`)"
-      - "traefik.http.routers.jaeger.entrypoints=websecure"
-      - "traefik.http.routers.jaeger.tls.certresolver=bizapps"
-      - "traefik.http.services.jaeger.loadbalancer.server.port=16686"
-      - "traefik.http.services.jaeger.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.tracer.rule=Host(`tracer.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.tracer.entrypoints=websecure"
+      - "traefik.http.routers.tracer.tls.certresolver=bizapps"
+      - "traefik.http.services.tracer.loadbalancer.server.port=16686"
+      - "traefik.http.services.tracer.loadbalancer.passhostheader=true"
     env_file:
       - .env

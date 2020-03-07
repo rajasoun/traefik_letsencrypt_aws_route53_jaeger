@@ -47,7 +47,7 @@ services:
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       ####
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.dashboard.rule=Host(`router.${BASE_DOMAIN}`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls.certresolver=bizapps"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"

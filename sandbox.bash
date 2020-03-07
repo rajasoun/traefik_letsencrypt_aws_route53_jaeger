@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-source "scripts/etc_hosts.bash"
+source "scripts/os.bash"
+source "scripts/web.bash"
 
 SERVICES=" -f router.yml -f tracer.yml -f whoami.yml"
-
 
 function help(){
     echo "Usage: $0  {up|down|status|logs}" >&2
@@ -19,31 +19,35 @@ function help(){
 
 function add_host_entries(){
   add "whoami.${BASE_DOMAIN}"
-  add "traefik.${BASE_DOMAIN}"
-  add "jaeger.${BASE_DOMAIN}"
+  add "router.${BASE_DOMAIN}"
+  add "tracer.${BASE_DOMAIN}"
 }
 
 function remove_host_entries(){
-  export $(cat .env)
   backup
   remove "whoami.${BASE_DOMAIN}"
-  remove "traefik.${BASE_DOMAIN}"
-  remove "jaeger.${BASE_DOMAIN}"
+  remove "router.${BASE_DOMAIN}"
+  remove "tracer.${BASE_DOMAIN}"
+}
+
+function display_app_status(){
+    echo "Apps Status"
+    display_url_status "https://router.${BASE_DOMAIN}/dashboard/#/"
+    display_url_status "https://tracer.${BASE_DOMAIN}"
+    display_url_status "https://tracer.${BASE_DOMAIN}"
 }
 
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
+export $(cat .env)
 case $choice in
     up)
       echo "Bring Up Application Stack"
-      export $(cat .env)
       docker-compose ${SERVICES} up -d
       echo "Adding Host Enteries...  "
       add_host_entries
-      echo "Goto following Links  "
-      echo "https://traefik.${BASE_DOMAIN}/dashboard/#/    ->  Traefic Dashboard"
-      echo "https://jaeger.${BASE_DOMAIN}                 ->  (jaeger) Distributed Tracing "
-      echo "https://whoami.${BASE_DOMAIN}                 ->  Sample App"      
+      wait_for_url "http://router.${BASE_DOMAIN}"
+      display_app_status
       ;;
     down)
       echo "Destroy Application Stack & Services"
@@ -53,7 +57,8 @@ case $choice in
       rm -fr logs/*.log
       ;;
     status)
-      echo "Containers Status..."
+      display_app_status
+      echo -e "\nContainers Status..."
       docker-compose ${SERVICES} ps
       ;;
     logs)

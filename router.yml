@@ -33,8 +33,6 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    env_file:
-      - .env
 
     volumes:
       - "./letsencrypt:/letsencrypt"
@@ -47,3 +45,7 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls.certresolver=bizapps"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+      - "traefik.http.services.dashboard.loadbalancer.passhostheader=true"
+    env_file:
+      - .env
+

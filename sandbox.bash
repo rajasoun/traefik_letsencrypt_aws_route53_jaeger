@@ -18,23 +18,29 @@ function help(){
 }
 
 function add_host_entries(){
-  add "whoami.${BASE_DOMAIN}"
   add "router.${BASE_DOMAIN}"
   add "tracer.${BASE_DOMAIN}"
+  add "whoami1.${BASE_DOMAIN}"
 }
 
 function remove_host_entries(){
   backup
-  remove "whoami.${BASE_DOMAIN}"
   remove "router.${BASE_DOMAIN}"
   remove "tracer.${BASE_DOMAIN}"
+  remove "whoami1.${BASE_DOMAIN}"
+}
+
+function verify_certificates(){
+  wait_for_url "http://router.${BASE_DOMAIN}"
+  wait_for_url "http://tracer.${BASE_DOMAIN}"
+  wait_for_url "http://whoami1.${BASE_DOMAIN}"
 }
 
 function display_app_status(){
     echo "Apps Status"
     display_url_status "https://router.${BASE_DOMAIN}/dashboard/#/"
     display_url_status "https://tracer.${BASE_DOMAIN}"
-    display_url_status "https://tracer.${BASE_DOMAIN}"
+    display_url_status "https://whoami1.${BASE_DOMAIN}"
 }
 
 opt="$1"
@@ -46,7 +52,7 @@ case $choice in
       docker-compose ${SERVICES} up -d
       echo "Adding Host Enteries...  "
       add_host_entries
-      wait_for_url "http://router.${BASE_DOMAIN}"
+      verify_certificates
       display_app_status
       ;;
     down)

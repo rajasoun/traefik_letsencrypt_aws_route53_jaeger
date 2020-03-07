@@ -42,7 +42,7 @@ Usage: ./sandbox.bash  {up|down|status|logs}
 
 > For macOS & Linux - Host enteries are added automatically. For windows, it needs to be added automatically
 
-Pls wait around a minute for the certificate generation from letsencrypt for the subdomains.
+Pls wait around around 3 mins for the certificate generation from letsencrypt for the subdomains.
 
 Add following enteries to your /etc/hosts in macOS or
 C:\Windows\System32\drivers\etc\hosts on Windows.

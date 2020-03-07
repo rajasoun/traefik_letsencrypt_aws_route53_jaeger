@@ -19,6 +19,10 @@ function help(){
 
 COMPOSE_FILES=" -f router.yml -f tracer.yml -f whoami.yml -f hotrod.yml"
 services=(router tracer whoami1 hotrod)
+
+# COMPOSE_FILES=" -f router.yml -f tracer.yml"
+# services=(router tracer)
+
 export services
 export $(cat .env)
 

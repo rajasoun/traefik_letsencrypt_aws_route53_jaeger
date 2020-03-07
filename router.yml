@@ -6,7 +6,7 @@ services:
     image: "traefik:v2.1"
     container_name: "traefik"
     command:
-      - "--log.level=DEBUG"
+      - "--log.level=ERROR"
       - "--log.filePath=/logs/traefik.log"
       - "--accesslog=true"
       - "--accesslog.filepath=/logs/access.log"

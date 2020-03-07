@@ -5,9 +5,7 @@ services:
   whoami:
     image: "containous/whoami"
     container_name: "whoami"
-    ports:
-      - "80"
-
+    
     environment:
       JAEGER_AGENT_HOST: "jaeger"
       JAEGER_AGENT_PORT: "6831"

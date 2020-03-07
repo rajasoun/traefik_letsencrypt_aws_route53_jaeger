@@ -13,7 +13,7 @@ function wait_for_url() {
     echo "If this the first time, Certificate generation takes around a min..."
     HOST=$1
     echo "Testing $1"
-    timeout -s TERM 180 bash -c \
+    timeout -s TERM 40 bash -c \
             'while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' ${0})" != "200" ]];\
             do echo "Waiting for ${0}" && sleep 5;\
             done' ${1}

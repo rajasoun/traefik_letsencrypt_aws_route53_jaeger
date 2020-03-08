@@ -20,11 +20,12 @@ function help(){
 COMPOSE_FILES=" -f router.yml -f tracer.yml -f whoami.yml -f hotrod.yml"
 services=(router tracer whoami1 hotrod)
 
-# COMPOSE_FILES=" -f router.yml -f tracer.yml"
-# services=(router tracer)
+# COMPOSE_FILES=" -f router.yml "
+# services=(router)
+
 
 export services
-export $(cat .env)
+export $(cat config/ssl)
 
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )

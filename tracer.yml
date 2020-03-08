@@ -22,5 +22,6 @@ services:
       - "traefik.http.routers.tracer.tls.certresolver=bizapps"
       - "traefik.http.services.tracer.loadbalancer.server.port=16686"
       - "traefik.http.services.tracer.loadbalancer.passhostheader=true"
+      
     env_file:
-      - .env
+      - config/ssl

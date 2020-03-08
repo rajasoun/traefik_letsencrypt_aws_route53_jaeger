@@ -20,7 +20,8 @@ services:
       - "traefik.http.routers.hotrod.tls.certresolver=bizapps"
       - "traefik.http.services.hotrod.loadbalancer.server.port=8080"
       - "traefik.http.services.hotrod.loadbalancer.passhostheader=true"   
+      
     env_file:
-      - .env
+      - config/ssl
 
       

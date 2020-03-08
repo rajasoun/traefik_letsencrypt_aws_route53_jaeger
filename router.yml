@@ -2,16 +2,16 @@ version: "3.7"
 
 services:
 
-  reverse-proxy:
-    image: "traefik:v2.1"
-    container_name: "traefik"
+  router:
+    image: "traefik:latest"
+    container_name: "router"
     command:
-      - "--log.level=ERROR"
+      - "--log.level=DEBUG"
       - "--log.filePath=/logs/traefik.log"
       - "--accesslog=true"
       - "--accesslog.filepath=/logs/access.log"
       - "--accesslog.bufferingsize=100"
-      - "--api.insecure=true"
+      - "--api=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
@@ -28,10 +28,11 @@ services:
       - "--tracing.jaeger.samplingType=const"
       # - "--metrics=true"
       # - "--certificatesresolvers.bizapps.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--api.insecure=true"
 
     ports:
-      - "80:80"
-      - "443:443"
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
       - "8080"
 
     volumes:
@@ -40,18 +41,24 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
     labels:
-      ### - HTTP -> HTTPS upgrade 
+      ### Catchall :  Global HTTP -> HTTPS upgrade 
       - traefik.http.routers.http_catchall.rule=HostRegexp(`{any:.+}`)
       - traefik.http.routers.http_catchall.entrypoints=web
       - traefik.http.routers.http_catchall.middlewares=https_redirect
       - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
       - traefik.http.middlewares.https_redirect.redirectscheme.permanent=true
-      ####
+      #### Dashboard  HTTPS support
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`router.${BASE_DOMAIN}`)"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls.certresolver=bizapps"
-      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
-      - "traefik.http.services.dashboard.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.router.rule=Host(`router.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.router.service=api@internal"
+      - "traefik.http.routers.router.entrypoints=websecure"
+      - "traefik.http.routers.router.tls.certresolver=bizapps"
+      - "traefik.http.services.router.loadbalancer.server.port=8080"
+      - "traefik.http.services.router.loadbalancer.passhostheader=true"
+
     env_file:
-      - .env
+      - config/ssl
+
+
+
+      

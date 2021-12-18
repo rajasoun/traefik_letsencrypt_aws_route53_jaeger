@@ -17,8 +17,11 @@ function help(){
     return 1
 }
 
-COMPOSE_FILES=" -f router.yml -f tracer.yml -f whoami.yml -f hotrod.yml"
-services=(router tracer whoami1 hotrod)
+#COMPOSE_FILES=" -f router.yml -f tracer.yml -f whoami.yml -f hotrod.yml"
+#services=(router tracer whoami hotrod)
+
+COMPOSE_FILES=" -f router.yml -f whoami.yml"
+services=(router whoami)
 
 # COMPOSE_FILES=" -f router.yml "
 # services=(router)
